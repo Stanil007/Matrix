@@ -3,78 +3,73 @@ int[,] matrix = new int[20, 20];
 int[] allNums = new int[400];
 Random random = new Random();
 
-//fill matrix with random numbers and fill allNums array with matrix numbers
-int indexAllNums = 0;
-for (int i = 0; i < 20; i++)
+//fill allNums array with random numbers
+for (int i = 0; i < allNums.Length; i++)
 {
-    for (int j = 0; j < 20; j++)
-    {
-        matrix[i, j] = random.Next(0, 10000);
-        allNums[indexAllNums] = matrix[i, j];
-        indexAllNums++;
-    }
+    allNums[i] = random.Next(0, 10000);
 }
+
+//fill matrix with random numbers from allNums array
+FillMatrix(matrix, allNums);
 
 //find biggest and smallest numbers in allNums array
 int biggestNum = allNums.Max();
 int smallestNum = allNums.Min();
 
-//print matrix on the screen
-for (int i = 0; i < 20; i++)
-{
-    for (int j = 0; j < 20; j++)
-    {
-        Console.Write(matrix[i, j] + "  ");
-    }
-    Console.WriteLine();
-}
+////print matrix on the screen
+PrintMatrix(matrix);
 
 //print smallest number with its coordinates
-for (int i = 0; i < 20; i++)
-{
-    for (int j = 0; j < 20; j++)
-    {
-        if (matrix[i, j] == smallestNum)
-        {
-            Console.WriteLine($"{i}:{j} -> {smallestNum}");
-            break;
-        }
-    }
-}
+PrintNumberWithCoordinates(matrix, smallestNum);
 
 //print biggest number with its coordinates
-for (int i = 0; i < 20; i++)
+PrintNumberWithCoordinates(matrix, biggestNum);
+
+//sort allNums array and fill sortedMatrix with sorted numbers
+allNums = allNums.OrderBy(x => x).ToArray();
+int[,] sortedMatrix = new int[20, 20];
+
+FillMatrix(sortedMatrix, allNums);
+
+////print sorted matrix on the screen
+PrintMatrix(sortedMatrix);
+
+static void PrintMatrix(int[,] matrix)
 {
-    for (int j = 0; j < 20; j++)
+    for (int i = 0; i < 20; i++)
     {
-        if (matrix[i, j] == biggestNum)
+        for (int j = 0; j < 20; j++)
         {
-            Console.WriteLine($"{i}:{j} -> {biggestNum}");
-            break;
+            Console.Write(matrix[i, j] + "  ");
+        }
+        Console.WriteLine();
+    }
+}
+
+static void PrintNumberWithCoordinates(int[,] matrix, int number)
+{
+    for (int i = 0; i < 20; i++)
+    {
+        for (int j = 0; j < 20; j++)
+        {
+            if (matrix[i, j] == number)
+            {
+                Console.WriteLine($"{i}:{j} -> {number}");
+                break;
+            }
         }
     }
 }
 
-//sort allNums array and fill sortedMatrix with sorted numbers
-int[] sortedNums = allNums.OrderBy(x => x).ToArray();
-int[,] sortedMatrix = new int[20, 20];
-
-int indexSortedNums = 0;
-for (int i = 0; i < 20; i++)
+static void FillMatrix(int[,] matrix, int[] nums)
 {
-    for (int j = 0; j < 20; j++)
+    int indexAllNums = 0;
+    for (int i = 0; i < 20; i++)
     {
-        sortedMatrix[i, j] = sortedNums[indexSortedNums];
-        indexSortedNums++;
+        for (int j = 0; j < 20; j++)
+        {
+            matrix[i, j] = nums[indexAllNums];
+            indexAllNums++;
+        }
     }
-}
-
-//print sorted matrix on the screen
-for (int i = 0; i < 20; i++)
-{
-    for (int j = 0; j < 20; j++)
-    {
-        Console.Write(sortedMatrix[i, j] + "  ");
-    }
-    Console.WriteLine();
 }
